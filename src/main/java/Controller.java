@@ -32,6 +32,12 @@ public class Controller {
         addStartRecord();
         btnStart.setDisable(true);
 
+        textFieldNote.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                addNote();
+            }
+        });
 
     }
 
@@ -119,20 +125,6 @@ public class Controller {
             System.exit(0);
         }
         System.out.println("FinishRecords created successfully");
-    }
-
-    public void inputNote(ActionEvent actionEvent) {
-        textFieldNote.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if (!textFieldNote.isFocused()) {
-                    addNote();
-
-                }
-            }
-        });
-
-
     }
 
     public void addNote() {
