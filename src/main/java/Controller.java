@@ -29,62 +29,70 @@ public class Controller {
 
     public void startCal(ActionEvent actionEvent) {
         System.out.println("Start to calculate time");
-        addStartRecord();
-        btnStart.setDisable(true);
 
-        textFieldNote.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                addNote();
-            }
-        });
+        DbHelper newRecord = new DbHelper("timerecord");
+        System.out.println("This is the mark to test Db");
+        newRecord.startRecord();
+
+
+
+
+        //addStartRecord();
+//        btnStart.setDisable(true);
+//
+//        textFieldNote.focusedProperty().addListener(new ChangeListener<Boolean>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+//                addNote();
+//            }
+//        });
 
     }
 
-    public void addStartRecord() {
-        Connection c = null;
-        Statement stmt = null;
-
-        try {
-            //connect db. If it is not exist it will create one
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:timeRecord.db");
-            c.setAutoCommit(false);
-            System.out.println("Opened database successfully");
-
-            stmt = c.createStatement();
-
-            //create table if not exists
-            System.out.println("create table sql run");
-            String sql = "CREATE TABLE IF NOT EXISTS record (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, startTime REAL NOT NULL , endTime REAL NOT NULL , note TEXT, company TEXT, username TEXT);";
-            stmt.executeUpdate(sql);
-
-            long currentTime = (System.currentTimeMillis()) / 1000L;
-            System.out.println("current starttime is" + currentTime);
-
-            sql = "insert into record (startTime,endTime) values ("
-                    + "'" + currentTime + "'" + ","
-                    + "'" + currentTime + "'" + ");";
-            stmt.executeUpdate(sql);
-
-            //To get the insert id for finishtime recording
-            ResultSet lastInsertId = stmt.getGeneratedKeys();
-            recordid = lastInsertId.getLong(1);
-            System.out.println("The latest inserted id is " + recordid);
-
-            System.out.println("created record successful");
-
-            stmt.close();
-            c.commit();
-            c.close();
-
-
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
-        }
-        System.out.println("StartRecords created successfully");
-    }
+//    public void addStartRecord() {
+//        Connection c = null;
+//        Statement stmt = null;
+//
+//        try {
+//            //connect db. If it is not exist it will create one
+//            Class.forName("org.sqlite.JDBC");
+//            c = DriverManager.getConnection("jdbc:sqlite:timeRecord.db");
+//            c.setAutoCommit(false);
+//            System.out.println("Opened database successfully");
+//
+//            stmt = c.createStatement();
+//
+//            //create table if not exists
+//            System.out.println("create table sql run");
+//            String sql = "CREATE TABLE IF NOT EXISTS record (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, startTime REAL NOT NULL , endTime REAL NOT NULL , note TEXT, company TEXT, username TEXT);";
+//            stmt.executeUpdate(sql);
+//
+//            long currentTime = (System.currentTimeMillis()) / 1000L;
+//            System.out.println("current starttime is" + currentTime);
+//
+//            sql = "insert into record (startTime,endTime) values ("
+//                    + "'" + currentTime + "'" + ","
+//                    + "'" + currentTime + "'" + ");";
+//            stmt.executeUpdate(sql);
+//
+//            //To get the insert id for finishtime recording
+//            ResultSet lastInsertId = stmt.getGeneratedKeys();
+//            recordid = lastInsertId.getLong(1);
+//            System.out.println("The latest inserted id is " + recordid);
+//
+//            System.out.println("created record successful");
+//
+//            stmt.close();
+//            c.commit();
+//            c.close();
+//
+//
+//        } catch (Exception e) {
+//            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+//            System.exit(0);
+//        }
+//        System.out.println("StartRecords created successfully");
+//    }
 
     public void finishCal(ActionEvent actionEvent) {
         System.out.println("finish button is clicked");
