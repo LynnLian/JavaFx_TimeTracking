@@ -30,9 +30,9 @@ public class Controller {
     public void startCal(ActionEvent actionEvent) {
         System.out.println("Start to calculate time");
 
-        DbHelper newRecord = new DbHelper("timerecord");
+        DbHelper newRecord = new DbHelper("timerecord.db");
         System.out.println("This is the mark to test Db");
-        newRecord.startRecord();
+//        newRecord.startRecord();
 
 
 

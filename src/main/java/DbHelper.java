@@ -1,7 +1,4 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 
 public class DbHelper {
     private String url;
@@ -32,6 +29,18 @@ public class DbHelper {
 //
 //
 //    }
+
+    private Connection connection(){
+        Connection conn = null;
+
+        try {
+            conn = DriverManager.getConnection(url);
+        } catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+
+        return conn;
+    }
 
     public void createTable() {
 
@@ -71,16 +80,16 @@ public class DbHelper {
         Connection conn;
         Statement stmt = null;
 
-
         try {
             Class.forName("org.sqlite.JDBC");
             conn = DriverManager.getConnection(url);
             conn.setAutoCommit(false);
 
             Long currentTime = (System.currentTimeMillis()) / 1000L;
-
             String sql = "INSERT into record(startTime) VALUES ('" + currentTime +
                     "');";
+
+
             stmt.executeUpdate(sql);
             System.out.println("Record is started.");
 
@@ -126,37 +135,37 @@ public class DbHelper {
     /**
      * @return Record
      */
-    public Record getRecordWithoutEndTime() {
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet res;
-
-
-        try {
-            Class.forName("org.sqlite.JDBC");
-            conn = DriverManager.getConnection(url);
-
-            stmt = conn.createStatement();
-
-
-            String sql = "SELECT id FROM record WHERE endTime IS NULL ";
-            res = stmt.executeQuery(sql);
-
-            //Think about how to get all the value in record
-            long id = res.getLong(0);
-            int startTime = res.getInt(1);
-            int endTime = res.getInt(2);
-
-
-
-
-        } catch (Exception e) {
-            System.out.println(e.getClass().getName() + " : " + e.getMessage());
-            System.exit(0);
-        }
-
-
-    }
+//    public Record getRecordWithoutEndTime() {
+//        Connection conn = null;
+//        Statement stmt = null;
+//        ResultSet res;
+//
+//
+//        try {
+//            Class.forName("org.sqlite.JDBC");
+//            conn = DriverManager.getConnection(url);
+//
+//            stmt = conn.createStatement();
+//
+//
+//            String sql = "SELECT id FROM record WHERE endTime IS NULL ";
+//            res = stmt.executeQuery(sql);
+//
+//            //Think about how to get all the value in record
+//            long id = res.getLong(0);
+//            int startTime = res.getInt(1);
+//            int endTime = res.getInt(2);
+//
+//
+//
+//
+//        } catch (Exception e) {
+//            System.out.println(e.getClass().getName() + " : " + e.getMessage());
+//            System.exit(0);
+//        }
+//
+//
+//    }
 
     public void updateNote(int id) {
 
