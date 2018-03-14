@@ -31,8 +31,8 @@ public class Controller {
         System.out.println("Start to calculate time");
 
         DbHelper newRecord = new DbHelper("timerecord.db");
-        System.out.println("This is the mark to test Db");
-//        newRecord.startRecord();
+        //System.out.println("This is the mark to test Db");
+        newRecord.startRecord();
 
 
 
@@ -96,8 +96,9 @@ public class Controller {
 
     public void finishCal(ActionEvent actionEvent) {
         System.out.println("finish button is clicked");
-        addFinishRecord();
-        btnStart.setDisable(false);
+        DbHelper startedRecord = new DbHelper("timerecord.db");
+        startedRecord.endRecord();
+//        btnStart.setDisable(false);
     }
 
     public void addFinishRecord() {
