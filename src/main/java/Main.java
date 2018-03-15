@@ -10,6 +10,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
         Parent root = FXMLLoader.load(getClass().getResource("TimeTracking.fxml"));
         Scene scene = new Scene(root, 715, 800);
         primaryStage.setTitle("Internship Diary");
@@ -23,4 +24,5 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
 }

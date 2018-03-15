@@ -1,3 +1,5 @@
+import jdk.nashorn.internal.runtime.ECMAException;
+
 import java.sql.*;
 
 public class DbHelper {
@@ -6,29 +8,8 @@ public class DbHelper {
     public DbHelper(String dbName) {
         url = "jdbc:sqlite:" + dbName;
         createTable();
-
-
     }
 
-//    public void connectDB() {
-//        Connection conn = null;
-//
-//        try {
-//            Class.forName("org.sqlite.JDBC");
-//            conn = DriverManager.getConnection(url);
-//
-//            System.out.println("DB is connected successfully.");
-//
-//            conn.close();
-//
-//
-//        } catch (Exception e) {
-//            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-//            System.exit(0);
-//        }
-//
-//
-//    }
 
     private Connection connection() {
         Connection conn = null;
@@ -46,9 +27,7 @@ public class DbHelper {
     public void createTable() {
 
 
-        try (Connection conn = connection(); Statement stmt = conn.createStatement();) {
-//            Class.forName("org.sqlite.JDBC");
-//            conn = DriverManager.getConnection(url);
+        try (Connection conn = connection(); Statement stmt = conn.createStatement()) {
 
 
             String sql = "CREATE TABLE IF NOT EXISTS record (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
@@ -70,13 +49,8 @@ public class DbHelper {
 
 
     public void startRecord() {
-//        Connection conn;
-//        Statement stmt = null;
 
         try (Connection conn = connection(); Statement stmt = conn.createStatement();) {
-//            Class.forName("org.sqlite.JDBC");
-//            conn = DriverManager.getConnection(url);
-//            conn.setAutoCommit(false);
 
             Long currentTime = (System.currentTimeMillis()) / 1000L;
             String sql = "INSERT into record(startTime) VALUES ('" + currentTime +
@@ -85,10 +59,6 @@ public class DbHelper {
 
             stmt.executeUpdate(sql);
             System.out.println("Record is started.");
-
-//            stmt.close();
-//            conn.commit();
-//            conn.close();
 
 
         } catch (Exception e) {
@@ -99,18 +69,13 @@ public class DbHelper {
 
 
     public void endRecord() {
-//        Connection conn = null;
-//        Statement stmt = null;
 
         try (Connection conn = connection(); Statement stmt = conn.createStatement();) {
-//            Class.forName("org.sqlite.JDBC");
-//            conn = DriverManager.getConnection(url);
-//
-//            stmt = conn.createStatement();
+
 
             Long currentTime = (System.currentTimeMillis()) / 1000L;
+            System.out.println("endRecord connection is build");
 
-// Maybe get the id from method getRecordWithoutEndTime
             long id = getRecordWithoutEndTime().getId();
             System.out.println("The id is " + id);
 
@@ -124,44 +89,36 @@ public class DbHelper {
 
     }
 
-    /**
-     * @return Record
-     */
+
     public Record getRecordWithoutEndTime() {
-//        Connection conn = null;
-//        Statement stmt = null;
+
+        System.out.println("Running getRecordWithoutEndTime method");
         ResultSet res;
 
 
         Record recodWithoutEndTime = null;
         try (Connection conn = connection(); Statement stmt = conn.createStatement();) {
-//            Class.forName("org.sqlite.JDBC");
-//            conn = DriverManager.getConnection(url);
-//
-//            stmt = conn.createStatement();
 
 
             String sql = "SELECT id FROM record WHERE endTime IS NULL ";
             res = stmt.executeQuery(sql);
             System.out.println("Sql to search id whose endTime is null");
 
-            //Think about how to get all the value in record
-            long id = res.getLong(0);
+            long id = res.getLong(1);
+            System.out.println("The id which endTime is null is " + id);
 
             String sqlToGetRecord = "SELECT * FROM record WHERE id IS " + id;
             res = stmt.executeQuery(sqlToGetRecord);
 
 
-            id = res.getLong(0);
-            int startTime = res.getInt(1);
-            int endTime = res.getInt(2);
-            String note = res.getString(3);
-            String company = res.getString(4);
-            String username = res.getString(5);
+            id = res.getLong(1);
+            int startTime = res.getInt(2);
+            int endTime = res.getInt(3);
+            String note = res.getString(4);
+            String company = res.getString(5);
+            String username = res.getString(6);
 
             recodWithoutEndTime = new Record(id, startTime, endTime, note, company, username);
-
-            System.out.println("The record is " + recodWithoutEndTime.toString());
 
 
         } catch (Exception e) {
@@ -174,7 +131,20 @@ public class DbHelper {
 
     }
 
-    public void updateNote(int id) {
+    public void updateNote(String note) {
+
+        try (Connection conn = connection(); Statement stmt = conn.createStatement()) {
+
+            long id = getRecordWithoutEndTime().getId();
+
+            String sql = "UPDATE record SET note = '" + note + "'WHERE id =" + id;
+            stmt.executeUpdate(sql);
+
+
+        } catch (Exception e) {
+            System.out.println(e.getClass().getName() + " : " + e.getMessage());
+            System.exit(0);
+        }
 
     }
 
