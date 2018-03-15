@@ -16,15 +16,16 @@ public class DbHelper {
 
         try {
             conn = DriverManager.getConnection(url);
+            System.out.println("DB is connected.");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
-        System.out.println("DB is connected.");
+
         return conn;
     }
 
-    public void createTable() {
+    private void createTable() {
 
 
         try (Connection conn = connection(); Statement stmt = conn.createStatement()) {
@@ -48,16 +49,19 @@ public class DbHelper {
     }
 
 
-    public void startRecord() {
+    public long startRecord() {
 
-        try (Connection conn = connection(); Statement stmt = conn.createStatement();) {
+        long id = -1;
+
+        try (Connection conn = connection();
+             Statement stmt = conn.createStatement()) {
 
             Long currentTime = (System.currentTimeMillis()) / 1000L;
             String sql = "INSERT into record(startTime) VALUES ('" + currentTime +
                     "');";
 
-
             stmt.executeUpdate(sql);
+
             System.out.println("Record is started.");
 
 
@@ -65,6 +69,8 @@ public class DbHelper {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
+
+        return id;
     }
 
 
@@ -100,18 +106,10 @@ public class DbHelper {
         try (Connection conn = connection(); Statement stmt = conn.createStatement();) {
 
 
-            String sql = "SELECT id FROM record WHERE endTime IS NULL ";
+            String sql = "SELECT * FROM record WHERE endTime IS NULL ";
             res = stmt.executeQuery(sql);
-            System.out.println("Sql to search id whose endTime is null");
 
             long id = res.getLong(1);
-            System.out.println("The id which endTime is null is " + id);
-
-            String sqlToGetRecord = "SELECT * FROM record WHERE id IS " + id;
-            res = stmt.executeQuery(sqlToGetRecord);
-
-
-            id = res.getLong(1);
             int startTime = res.getInt(2);
             int endTime = res.getInt(3);
             String note = res.getString(4);

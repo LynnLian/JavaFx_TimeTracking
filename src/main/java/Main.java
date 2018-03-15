@@ -11,10 +11,15 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Parent root = FXMLLoader.load(getClass().getResource("TimeTracking.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("TimeTracking.fxml"));
+        Parent root = loader.load();
         Scene scene = new Scene(root, 715, 800);
         primaryStage.setTitle("Internship Diary");
         primaryStage.setScene(scene);
+
+        Controller controller = loader.getController();
+        controller.init();
+
         scene.getStylesheets().add(Controller.class.getResource("main.css").toExternalForm());
 
         primaryStage.show();

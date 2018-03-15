@@ -29,23 +29,20 @@ public class Controller {
 
     String text = "text";
 
-    // Need to think about how to show the existed note dynamic
-    public void setTextFieldNote() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TimeTracking.fxml"));
-        fxmlLoader.getNamespace().put("text",text);
+    private long recordId = 0;
+
+
+
+    public void init() {
+
     }
-
-
-    long recordid = 0;
-
-
 
     public void startCal(ActionEvent actionEvent) {
         System.out.println("Start to calculate time");
 
         DbHelper newRecord = new DbHelper("timerecord.db");
         //System.out.println("This is the mark to test Db");
-        newRecord.startRecord();
+        recordId = newRecord.startRecord();
 
     }
 
