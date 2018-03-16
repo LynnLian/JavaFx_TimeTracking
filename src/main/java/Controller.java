@@ -29,11 +29,19 @@ public class Controller {
 
     String text = "text";
 
-    private long recordId = 0;
-
+    private long recordId = -1;
 
 
     public void init() {
+        DbHelper initRecord = new DbHelper("timerecord.db");
+        recordId = initRecord.getRecordWithoutEndTime().getId();
+
+        if (recordId > 0) {
+            btnStart.setDisable(true);
+            textFieldNote.setText(initRecord.getRecordWithoutEndTime().getNote());
+        }
+
+
 
     }
 
@@ -50,7 +58,7 @@ public class Controller {
         System.out.println("finish button is clicked");
         DbHelper startedRecord = new DbHelper("timerecord.db");
         startedRecord.endRecord();
-//        btnStart.setDisable(false);
+        btnStart.setDisable(false);
     }
 
     public void updateNote(ActionEvent actionEvent) {
@@ -58,7 +66,6 @@ public class Controller {
         DbHelper noteRecord = new DbHelper("timerecord.db");
 
         noteRecord.updateNote(note);
-
 
 
     }
