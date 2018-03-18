@@ -27,45 +27,55 @@ public class Controller {
     @FXML
     public TextField textFieldNote;
 
-    String text = "text";
+    //TODO: add a label to show the current time
 
     private long recordId = -1;
-
+    private DbHelper dbHelper;
 
     public void init() {
-        DbHelper initRecord = new DbHelper("timerecord.db");
-        recordId = initRecord.getRecordWithoutEndTime().getId();
+        dbHelper = new DbHelper("timerecord.db");
+        Record initRecord = dbHelper.getRecordWithoutEndTime();
 
-        if (recordId > 0) {
-            btnStart.setDisable(true);
-            textFieldNote.setText(initRecord.getRecordWithoutEndTime().getNote());
+        if (initRecord != null) {
+            recordId = initRecord.getId();
+            if (recordId > 0) {
+                System.out.println("if loop in init");
+                btnStart.setDisable(true);
+                textFieldNote.setText(initRecord.getNote());
+                btnFinish.setDisable(false);
+            }
+        } else {
+            btnStart.setDisable(false);
+            btnFinish.setDisable(true);
         }
-
-
-
     }
 
+    //TODO: To create a method for the state use(A method to init the function in open record state and closed record state
     public void startCal(ActionEvent actionEvent) {
-        System.out.println("Start to calculate time");
 
-        DbHelper newRecord = new DbHelper("timerecord.db");
+
+        System.out.println("Start to calculate time");
         //System.out.println("This is the mark to test Db");
-        recordId = newRecord.startRecord();
+        recordId = dbHelper.startRecord();
+        btnStart.setDisable(true);
+        btnFinish.setDisable(false);
 
     }
 
     public void finishCal(ActionEvent actionEvent) {
+
         System.out.println("finish button is clicked");
-        DbHelper startedRecord = new DbHelper("timerecord.db");
-        startedRecord.endRecord();
+        dbHelper.endRecord();
         btnStart.setDisable(false);
+        btnFinish.setDisable(true);
     }
 
+    //TODO: to remove the text in Note textfield when there is no open record (not sure this will be implement here but just write it down)
+    //TODO: delete the update note button and make it save automatically
     public void updateNote(ActionEvent actionEvent) {
-        String note = textFieldNote.getText();
-        DbHelper noteRecord = new DbHelper("timerecord.db");
 
-        noteRecord.updateNote(note);
+        String note = textFieldNote.getText();
+        dbHelper.updateNote(note);
 
 
     }

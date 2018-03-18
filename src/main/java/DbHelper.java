@@ -35,7 +35,7 @@ public class DbHelper {
                     "startTime INTEGER NOT NULL," +
                     "endTime INTEGER," +
                     "note TEXT," +
-                    "company Text," +
+                    "company TEXT," +
                     "username TEXT);";
             stmt.executeUpdate(sql);
 
@@ -102,29 +102,32 @@ public class DbHelper {
         ResultSet res;
 
 
-        Record recodWithoutEndTime = null;
+        Record recordWithoutEndTime = null;
         try (Connection conn = connection(); Statement stmt = conn.createStatement();) {
 
 
             String sql = "SELECT * FROM record WHERE endTime IS NULL ";
             res = stmt.executeQuery(sql);
 
-            long id = res.getLong(1);
-            int startTime = res.getInt(2);
-            int endTime = res.getInt(3);
-            String note = res.getString(4);
-            String company = res.getString(5);
-            String username = res.getString(6);
+            if (res.next()) {
+                long id = res.getLong(1);
+                int startTime = res.getInt(2);
+                int endTime = res.getInt(3);
+                String note = res.getString(4);
+                String company = res.getString(5);
+                String username = res.getString(6);
 
-            recodWithoutEndTime = new Record(id, startTime, endTime, note, company, username);
+                recordWithoutEndTime = new Record(id, startTime, endTime, note, company, username);
+
+            }
 
 
         } catch (Exception e) {
-            System.out.println(e.getClass().getName() + " : " + e.getMessage());
-            System.exit(0);
+            System.err.println(e.getClass().getName() + " : " + e.getMessage());
+//            System.exit(0);
         }
 
-        return recodWithoutEndTime;
+        return recordWithoutEndTime;
 
 
     }

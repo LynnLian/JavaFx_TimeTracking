@@ -63,4 +63,8 @@ public class Record {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public String toString () {
+        return "The reocrd is " + "id: " + id + "startTime: " + startTime + "endTIme: "+ endTime + "note: " + note + "company: " + company + "username: " + username;
+    }
 }
