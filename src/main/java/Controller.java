@@ -6,8 +6,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 import java.awt.*;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 
 import javafx.fxml.FXMLLoader;
@@ -32,8 +34,8 @@ public class Controller {
     @FXML
     private Label labelLocalTime;
 
-    @FXML
-    private Label labelLocalDate;
+//    @FXML
+//    private Label labelLocalDate;
 
 
     private long recordId = -1;
@@ -81,8 +83,9 @@ public class Controller {
 
         System.out.println("finish button is clicked");
         dbHelper.endRecord();
-        btnStart.setDisable(false);
-        btnFinish.setDisable(true);
+        closedRecord();
+//        btnStart.setDisable(false);
+//        btnFinish.setDisable(true);
     }
 
     //TODO: to remove the text in Note textfield when there is no open record (not sure this will be implement here but just write it down)
@@ -100,17 +103,20 @@ public class Controller {
 //        Timeline time = new Timeline(new )
 
 
-        LocalDate date = LocalDate.now();
-        String day = Integer.toString(date.getDayOfMonth());
-        String month = Integer.toString(date.getMonthValue());
-        String year = Integer.toString(date.getYear());
+//        LocalDate date = LocalDate.now();
+//        String day = Integer.toString(date.getDayOfMonth());
+//        String month = Integer.toString(date.getMonthValue());
+//        String year = Integer.toString(date.getYear());
+//
+//        LocalDateTime localTime = LocalDateTime.now();
+//        String hour = Integer.toString(localTime.getHour());
+//        String min = Integer.toString(localTime.getMinute());
+//
+//        labelLocalTime.setText(hour + " : " + min);
+//        labelLocalDate.setText(day + " / " + month + " / " + year);
 
-        LocalDateTime localTime = LocalDateTime.now();
-        String hour = Integer.toString(localTime.getHour());
-        String min = Integer.toString(localTime.getMinute());
-
-        labelLocalDate.setText(day + " / " + month + " / " + year);
-        labelLocalTime.setText(hour + " : " + min);
+        String time = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new Date (System.currentTimeMillis()));
+        labelLocalTime.setText(time);
 
 
     }
