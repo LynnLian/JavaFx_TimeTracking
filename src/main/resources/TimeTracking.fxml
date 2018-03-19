@@ -10,10 +10,12 @@
 
 <AnchorPane id="mainbackgroup" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="628.0" prefWidth="600.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
     <children>
-        <Button fx:id="btnStart" layoutX="300.0" layoutY="147.0" mnemonicParsing="false" onAction="#startCal" text="START" />
-        <Button fx:id="btnFinish" layoutX="403.0" layoutY="147.0" mnemonicParsing="false" onAction="#finishCal" text="FINISH" />
-        <TextField fx:id="textFieldNote" layoutX="213.0" layoutY="195.0" prefHeight="154.0" prefWidth="283.0" text="$existedNote" />
-        <Label layoutX="213.0" layoutY="178.0" text="NOTE" />
-      <Button fx:id="btnNote" layoutX="311.0" layoutY="362.0" mnemonicParsing="false" onAction="#updateNote" text="Update Note!" />
+        <Button fx:id="btnStart" layoutX="300.0" layoutY="225.0" mnemonicParsing="false" onAction="#startCal" text="START" />
+        <Button fx:id="btnFinish" layoutX="403.0" layoutY="225.0" mnemonicParsing="false" onAction="#finishCal" text="FINISH" />
+        <TextField fx:id="textFieldNote" layoutX="213.0" layoutY="273.0" prefHeight="154.0" prefWidth="283.0" text="$existedNote" />
+        <Label layoutX="213.0" layoutY="256.0" text="NOTE" />
+      <Button fx:id="btnNote" layoutX="311.0" layoutY="440.0" mnemonicParsing="false" onAction="#updateNote" text="Update Note!" />
+      <Label fx:id="labelLocalDate" layoutX="300.0" layoutY="177.0" text="Label" />
+      <Label fx:id="labelLocalTime" layoutX="386.0" layoutY="177.0" text="Label" />
     </children>
 </AnchorPane>
