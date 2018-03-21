@@ -62,7 +62,7 @@ public class DbHelper {
             System.out.println("Inserted startTime");
 
             stmt.executeUpdate(sql);
-            
+
             id = getRecordWithoutEndTime().getId();
 
             System.out.println("Record is started and the id is " + id);
@@ -136,20 +136,20 @@ public class DbHelper {
 
     }
 
-    public void updateNote(String note) {
+    public void updateNote(String note, long id) {
+        if (id > 0) {
+            try (Connection conn = connection(); Statement stmt = conn.createStatement()) {
 
-        try (Connection conn = connection(); Statement stmt = conn.createStatement()) {
+//            long id = getRecordWithoutEndTime().getId();
 
-            long id = getRecordWithoutEndTime().getId();
+                String sql = "UPDATE record SET note = '" + note + "'WHERE id =" + id;
+                stmt.executeUpdate(sql);
 
-            String sql = "UPDATE record SET note = '" + note + "'WHERE id =" + id;
-            stmt.executeUpdate(sql);
-
-
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + " : " + e.getMessage());
+            } catch (Exception e) {
+                System.out.println(e.getClass().getName() + " : " + e.getMessage());
+                System.out.println("It is me!");
+            }
         }
-
     }
 
 }

@@ -45,6 +45,10 @@ public class Controller {
         dbHelper = new DbHelper("timerecord.db");
         Record initRecord = dbHelper.getRecordWithoutEndTime();
 
+        Thread clockT = new Thread(new ClockThread(labelLocalTime));
+        clockT.setDaemon(true);
+        clockT.start();
+
         if (initRecord != null) {
             recordId = initRecord.getId();
             if (recordId > 0) {
@@ -53,6 +57,9 @@ public class Controller {
 //                btnStart.setDisable(true);
 //                textFieldNote.setText(initRecord.getNote());
 //                btnFinish.setDisable(false);
+
+
+                //TODO: null should not be displayed in textfield
             }
         } else {
             closedRecord();
@@ -66,7 +73,6 @@ public class Controller {
     }
 
     public void startCal(ActionEvent actionEvent) {
-
 
         System.out.println("Start to calculate time");
         //System.out.println("This is the mark to test Db");
@@ -101,7 +107,6 @@ public class Controller {
     public void localDateTime() {
 //        Timeline time = new Timeline(new )
 
-
 //        LocalDate date = LocalDate.now();
 //        String day = Integer.toString(date.getDayOfMonth());
 //        String month = Integer.toString(date.getMonthValue());
@@ -116,8 +121,6 @@ public class Controller {
 
         String time = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new Date(System.currentTimeMillis()));
         labelLocalTime.setText(time);
-
-
     }
 
     //The openRecord status should: 1. Disabel Start Button 2. Enabel Finish Button 3. Enable Note field & display the existed note
@@ -132,17 +135,11 @@ public class Controller {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 System.out.println("Mark in textFieldNote listener and the id is " + recordId);
-                if(recordId > 0) {
+                if (recordId > 0) {
 
-                    dbHelper.updateNote(newValue);
+                    dbHelper.updateNote(newValue, recordId);
                     System.out.println("Note is update because of change and the newValue is " + newValue);
-
                 }
-
-
-
-
-
             }
         });
 
@@ -157,6 +154,5 @@ public class Controller {
         textFieldNote.setDisable(true);
         recordId = -1;
         System.out.println("closedRecord is end");
-
     }
 }
