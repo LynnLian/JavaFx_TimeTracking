@@ -59,10 +59,13 @@ public class DbHelper {
             Long currentTime = (System.currentTimeMillis()) / 1000L;
             String sql = "INSERT into record(startTime) VALUES ('" + currentTime +
                     "');";
+            System.out.println("Inserted startTime");
 
             stmt.executeUpdate(sql);
+            
+            id = getRecordWithoutEndTime().getId();
 
-            System.out.println("Record is started.");
+            System.out.println("Record is started and the id is " + id);
 
 
         } catch (Exception e) {
@@ -74,22 +77,23 @@ public class DbHelper {
     }
 
 
-    public void endRecord() {
+    public void endRecord(long id) {
 
         try (Connection conn = connection(); Statement stmt = conn.createStatement();) {
+            System.out.println("test endRecord");
 
 
             Long currentTime = (System.currentTimeMillis()) / 1000L;
-            System.out.println("endRecord connection is build");
+            System.out.println("endRecord connection is build & the id is " + id);
 
-            long id = getRecordWithoutEndTime().getId();
-            System.out.println("The id is " + id);
+            //long id = getRecordWithoutEndTime().getId();
+
 
             String sql = "UPDATE record SET endTime = '" + currentTime + "'WHERE id =" + id;
             stmt.executeUpdate(sql);
 
         } catch (Exception e) {
-            System.out.println(e.getClass().getName() + " : " + e.getMessage());
+            System.err.println(e.getClass().getName() + " : " + e.getMessage());
             System.exit(0);
         }
 
@@ -143,8 +147,7 @@ public class DbHelper {
 
 
         } catch (Exception e) {
-            System.out.println(e.getClass().getName() + " : " + e.getMessage());
-            System.exit(0);
+            System.err.println(e.getClass().getName() + " : " + e.getMessage());
         }
 
     }
